@@ -1,4 +1,4 @@
-type censureOptions = {
+type censorOptions = {
     censorText:String
     censorLoop:Boolean
     censorLongest:Boolean
@@ -7,4 +7,4 @@ type censureOptions = {
     censorEnd:Number
 }
 export const badwords:Array<String>
-export function censure(text:String,options:censureOptions):String
+export function censor(text:String,options:censorOptions):String
