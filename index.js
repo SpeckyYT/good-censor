@@ -26,6 +26,8 @@ function spliceString(string, index, deleteCount, ...items){
 }
 
 function censor(text, options){
+    const ac = load();
+    
     if(typeof text != 'string') return '';
     if(typeof options != 'object') options = {};
 
@@ -48,8 +50,6 @@ function censor(text, options){
 
     parsedOptions.censorStart = parsedOptions.censorStart || 0;
     parsedOptions.censorEnd = parsedOptions.censorEnd || 0;
-
-    const ac = load();
 
     const results = ac.search(text.toLowerCase()).reverse();
 
