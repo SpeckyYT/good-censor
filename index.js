@@ -9,12 +9,9 @@ const cache = {
 function load(){
     if(!Array.isArray(badwords)) badwords = [];
     if(cache.size == badwords.length) return cache.ac;
+    badwords = badwords.filter(bw => typeof bw == 'string' && bw.length > 0);
     cache.size = badwords.length;
-    cache.ac = new ahocorasick(
-        badwords.map(
-            b => b && typeof b == 'string' ? b.toLowerCase() : NaN
-        )
-    );
+    cache.ac = new ahocorasick(badwords);
     return cache.ac;
 }
 
