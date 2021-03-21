@@ -18,6 +18,14 @@ function load(){
     return cache.ac;
 }
 
+function parseResults(results = [], longest = true){
+    if(!Array.isArray(results)) return [];
+    return results.map(([index,matches]) => {
+        const length = Math[longest?'max':'min'](matches.map(s => s.length));
+        return [index + 1 - length, length];
+    });
+}
+
 function spliceString(string, index, deleteCount, ...items){
     const start = string.slice(0, index);
     const insert = items.join('');
@@ -52,18 +60,16 @@ function censor(text, options){
     parsedOptions.censorEnd = parsedOptions.censorEnd || 0;
 
     const results = ac.search(text.toLowerCase()).reverse();
+    const parsedResults = parseResults(results, parsedOptions.censorLongest);
 
-    for(const [index,matches] of results){
-        const length = Math[parsedOptions.censorLongest ? 'max' : 'min']
-            (...matches.map(s => s.length));
-
+    for(const [index,length] of parsedResults){
         const count = length -
             parsedOptions.censorStart -
             parsedOptions.censorEnd;
 
         if(count <= 0) continue;
 
-        const start = index + 1 - length + parsedOptions.censorStart;
+        const start = index + parsedOptions.censorStart;
 
         let censorText = parsedOptions.censorText;
         if(parsedOptions.censorLoop && censorText.length > 0)
