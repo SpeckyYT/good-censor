@@ -15,12 +15,18 @@ function load(){
     return cache.ac;
 }
 
-function parseResults(results = [], longest = true){
+function parseResults(results = [], longest){
     if(!Array.isArray(results)) return [];
-    return results.map(([index,matches]) => {
-        const length = Math[longest?'max':'min'](matches.map(s => s.length));
-        return [index + 1 - length, length];
-    });
+    const map = {};
+    for(const [index,matches] of results){
+        for(const match of matches){
+            const i = index + 1 - match.length;
+            if(!map[i]) map[i] = match.length;
+            else if(!longest && match.length < map[i]) map[i] = match.length;
+            else if(longest && match.length > map[i]) map[i] = match.length;
+        }
+    }
+    return Object.entries(map);
 }
 
 function spliceString(string, index, deleteCount, ...items){
@@ -56,8 +62,12 @@ function censor(text, options){
     parsedOptions.censorStart = parsedOptions.censorStart || 0;
     parsedOptions.censorEnd = parsedOptions.censorEnd || 0;
 
-    const results = ac.search(text.toLowerCase()).reverse();
-    const parsedResults = parseResults(results, parsedOptions.censorLongest);
+    const results = ac.search(text.toLowerCase());
+    const parsedResults = parseResults(
+        results,
+        parsedOptions.censorLongest
+    )
+    .reverse();
 
     for(const [index,length] of parsedResults){
         const count = length -
@@ -66,7 +76,7 @@ function censor(text, options){
 
         if(count <= 0) continue;
 
-        const start = index + parsedOptions.censorStart;
+        const start = parseInt(index) + parsedOptions.censorStart;
 
         let censorText = parsedOptions.censorText;
         if(parsedOptions.censorLoop && censorText.length > 0)

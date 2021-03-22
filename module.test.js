@@ -3,6 +3,7 @@ const Censor = require('.');
 
 Censor.badwords.push(
     'duck',
+    'ducking',
     'ship',
     'sax',
     'nagger',
@@ -38,6 +39,20 @@ describe('good-censor', function(){
         }
         const result = Censor.censor(toCensor, options)
         assert.strictEqual(result, '-=BEEP=- my -=BEEP=-')
+    })
+    it('should censor the longest bad word', function(){
+        const options = {
+            censorLongest: true,
+        }
+        const result = Censor.censor('ducking', options)
+        assert.strictEqual(result, '*******')
+    })
+    it('should censor the shortest bad word', function(){
+        const options = {
+            censorLongest: false,
+        }
+        const result = Censor.censor('ducking', options)
+        assert.strictEqual(result, '****ing')
     })
     it('should test the efficency (~1300 chars * 100 times)', function(){
         this.slow(60)
