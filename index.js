@@ -21,9 +21,8 @@ function parseResults(results = [], longest){
     for(const [index,matches] of results){
         for(const match of matches){
             const i = index + 1 - match.length;
-            if(!map[i]) map[i] = match.length;
-            else if(!longest && match.length < map[i]) map[i] = match.length;
-            else if(longest && match.length > map[i]) map[i] = match.length;
+            if(!map[i] || longest != match.length < map[i])
+                map[i] = match.length;
         }
     }
     return Object.entries(map);
