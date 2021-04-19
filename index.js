@@ -35,6 +35,11 @@ function spliceString(string, index, deleteCount, ...items){
     return `${start}${insert}${end}`;
 }
 
+function isIntersecting([s1,e1],ignore){
+    for(const [s2,l2] of ignore)
+        if(s1 <= s2 + l2 && s2 <= e1) return true;
+}
+
 function censor(text, options){
     const ac = load();
     
@@ -50,10 +55,15 @@ function censor(text, options){
         ['censorSlice','boolean',true],
         ['censorStart','number',0],
         ['censorEnd','number',0],
+        ['ignore',RegExp,/(?!)/]
     ]
     .forEach(([key,type,normal]) => {
         parsedOptions[key] =
-            typeof options[key] == type ?
+            (
+                typeof type == 'string' ?
+                    typeof options[key] == type :
+                    options[key] instanceof type
+            ) ?
                 options[key] :
                 normal;
     });
@@ -68,7 +78,22 @@ function censor(text, options){
     )
     .reverse();
 
+    const ignoreRegex = new RegExp(parsedOptions.ignore,'iy');
+    const ignore = [];
+    
+    for(let i = 0; i < text.length; i++){
+        ignoreRegex.lastIndex = i;
+        const res = ignoreRegex.exec(text);
+        if(!res) continue;
+        ignore.push([
+            res.index,
+            res[0].length,
+        ]);
+    }
+
     for(const [index,length] of parsedResults){
+        if(isIntersecting([index,index+length],ignore)) continue;
+
         const count = length -
             parsedOptions.censorStart -
             parsedOptions.censorEnd;
