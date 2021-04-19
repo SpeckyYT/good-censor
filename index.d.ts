@@ -5,6 +5,7 @@ type censorOptions = {
     censorSlice:Boolean
     censorStart:Number
     censorEnd:Number
+    ignore:RegExp
 }
 export const badwords:Array<String>
 export function censor(text:String,options:censorOptions):String
