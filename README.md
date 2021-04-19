@@ -40,6 +40,7 @@ const options = {
     censorSlice: true,
     censorStart: 0,
     censorEnd: 0,
+    ignore: /(?!)/
 }
 Censor.censor('someString',options);
 ```
@@ -134,3 +135,12 @@ options = {
 // result: **ck you, you little ***ch
 ```
 NOTE: if you put a number which is too big (especially in combination with `options.censorStart`), the full word may get not censored. 
+
+## options.ignore
+```js
+options = {
+    ignore: /ck|ch/
+}
+// result: duck you, you little batch
+```
+NOTE: this is really useful in cases where you don't want to censure URLs or other specific strings. The flags will be forced to be `iy`
