@@ -1,14 +1,29 @@
-# good-censor
+# Good-Censor
 
 A simple censoring module for all your needs.
 
-# Installation
+## Contents
 
-```
+- [Good-Censor](#good-censor)
+  - [Contents](#contents)
+  - [Installation](#installation)
+  - [Usage](#usage)
+  - [Options](#options)
+    - [options.censorText](#optionscensortext)
+    - [options.censorLoop](#optionscensorloop)
+    - [options.censorLongest](#optionscensorlongest)
+    - [options.censorSlice](#optionscensorslice)
+    - [options.censorStart](#optionscensorstart)
+    - [options.censorEnd](#optionscensorend)
+    - [options.ignore](#optionsignore)
+
+## Installation
+
+```sh
 npm i --save good-censor
 ```
 
-# Usage
+## Usage
 
 ```js
 const Censor = require('good-censor');
@@ -30,7 +45,8 @@ const censored = Censor.censor('duck you, you little batch');
 console.log(censored) // "**** you, you little *****"
 ```
 
-# Options
+## Options
+
 ```js
 // the following are the default values
 const options = {
@@ -45,7 +61,8 @@ const options = {
 Censor.censor('someString',options);
 ```
 
-## options.censorText
+### options.censorText
+
 ```js
 options = {
     censorText: '#',
@@ -60,7 +77,8 @@ options = {
 // result: ~BEEP~ you, you little ~BEEP~
 ```
 
-## options.censorLoop
+### options.censorLoop
+
 ```js
 options = {
     censorText: '#',
@@ -76,7 +94,8 @@ options = {
 // result: NONO you, you little NONONO
 ```
 
-## options.censorLongest
+### options.censorLongest
+
 ```js
 Censor.badwords.push('duck','ducking')
 text = 'ducking'
@@ -93,7 +112,8 @@ options = {
 // result: ****ing
 ```
 
-## options.censorSlice
+### options.censorSlice
+
 ```js
 options = {
     censorText: 'AAAAAAAAAA',
@@ -108,7 +128,8 @@ options = {
 // result: AAAAAAAAAA you, you little AAAAAAAAAA
 ```
 
-## options.censorStart
+### options.censorStart
+
 ```js
 options = {
     censorStart: 1,
@@ -120,9 +141,11 @@ options = {
 }
 // result: du** you, you little ba***
 ```
-NOTE: if you put a number which is too big (especially in combination with `options.censorEnd`), the full word may get not censored. 
 
-## options.censorEnd
+NOTE: if you put a number which is too big (especially in combination with `options.censorEnd`), the full word may get not censored.
+
+### options.censorEnd
+
 ```js
 options = {
     censorEnd: 1,
@@ -134,13 +157,16 @@ options = {
 }
 // result: **ck you, you little ***ch
 ```
-NOTE: if you put a number which is too big (especially in combination with `options.censorStart`), the full word may get not censored. 
 
-## options.ignore
+NOTE: if you put a number which is too big (especially in combination with `options.censorStart`), the full word may get not censored.
+
+### options.ignore
+
 ```js
 options = {
     ignore: /ck|ch/
 }
 // result: duck you, you little batch
 ```
+
 NOTE: this is really useful in cases where you don't want to censure URLs or other specific strings. The flags will be forced to be `iy`
