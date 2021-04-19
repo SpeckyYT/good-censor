@@ -54,9 +54,4 @@ describe('good-censor', function(){
         const result = Censor.censor('ducking', options)
         assert.strictEqual(result, '****ing')
     })
-    it('should test the efficency (~1300 chars * 100 times)', function(){
-        this.slow(60)
-        const text = `${toCensor} `.repeat(100);
-        for(let i = 0; i < 100; i++) Censor.censor(text)
-    })
 })
