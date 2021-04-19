@@ -40,6 +40,13 @@ describe('good-censor', function(){
         const result = Censor.censor(toCensor, options)
         assert.strictEqual(result, '-=BEEP=- my -=BEEP=-')
     })
+    it('should not censor if it matches the ignore', function(){
+        const options = {
+            ignore: /ck/g
+        }
+        const result = Censor.censor(toCensor, options);
+        assert.strictEqual(result, 'duck my ****')
+    })
     it('should censor the longest bad word', function(){
         const options = {
             censorLongest: true,
