@@ -1,11 +1,15 @@
 type censorOptions = {
-    censorText:String
-    censorLoop:Boolean
-    censorLongest:Boolean
-    censorSlice:Boolean
-    censorStart:Number
-    censorEnd:Number
+    censorText:string
+    censorLoop:boolean
+    censorLongest:boolean
+    censorSlice:boolean
+    censorStart:number
+    censorEnd:number
     ignore:RegExp
 }
-export const badwords:Array<String>
-export function censor(text:String,options:censorOptions):String
+export = class GoodCensor {
+    constructor(words:Array<string>|string,defaultOptions:Partial<censorOptions>)
+    badwords:Array<string>
+    censor(text:string,options:censorOptions):string
+    check(text:string,options:censorOptions):boolean
+}
