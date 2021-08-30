@@ -1,7 +1,7 @@
 const assert = require('assert');
-const Censor = require('.');
+const GoodCensor = require('.');
 
-Censor.badwords.push(
+const badwords = [
     'duck',
     'ducking',
     'ship',
@@ -12,14 +12,16 @@ Censor.badwords.push(
     'batch',
     'clip',
     'milk',
-)
+]
+
+const myCensor = new GoodCensor(badwords)
 
 const toCensor = 'duck my ship';
 
 describe('good-censor', function(){
     this.slow(5)
     it('should censor the text', function(){
-        const result = Censor.censor(toCensor)
+        const result = myCensor.censor(toCensor)
         assert.strictEqual(result, '**** my ****')
     })
     it('should censor using censorStart and censorEnd', function(){
@@ -28,7 +30,7 @@ describe('good-censor', function(){
             censorStart: 1,
             censorEnd: 1,
         }
-        const result = Censor.censor(toCensor, options)
+        const result = myCensor.censor(toCensor, options)
         assert.strictEqual(result, 'd##k my s##p')
     })
     it('should censor using censorLoop and censorSlice', function(){
@@ -37,28 +39,28 @@ describe('good-censor', function(){
             censorLoop: false,
             censorSlice: false,
         }
-        const result = Censor.censor(toCensor, options)
+        const result = myCensor.censor(toCensor, options)
         assert.strictEqual(result, '-=BEEP=- my -=BEEP=-')
     })
     it('should not censor if it matches the ignore', function(){
         const options = {
             ignore: /ck/g
         }
-        const result = Censor.censor(toCensor, options);
+        const result = myCensor.censor(toCensor, options);
         assert.strictEqual(result, 'duck my ****')
     })
     it('should censor the longest bad word', function(){
         const options = {
             censorLongest: true,
         }
-        const result = Censor.censor('ducking', options)
+        const result = myCensor.censor('ducking', options)
         assert.strictEqual(result, '*******')
     })
     it('should censor the shortest bad word', function(){
         const options = {
             censorLongest: false,
         }
-        const result = Censor.censor('ducking', options)
+        const result = myCensor.censor('ducking', options)
         assert.strictEqual(result, '****ing')
     })
 })
