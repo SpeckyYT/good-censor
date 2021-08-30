@@ -26,9 +26,9 @@ npm i --save good-censor
 ## Usage
 
 ```js
-const Censor = require('good-censor');
+const GoodCensor = require('good-censor');
 
-Censor.badwords.push(
+const badwords = [
     'duck',
     'ship',
     'sax',
@@ -38,9 +38,11 @@ Censor.badwords.push(
     'batch',
     'clip',
     'milk',
-)
+]
 
-const censored = Censor.censor('duck you, you little batch');
+const myCensor = new GoodCensor(badwords)
+
+const censored = myCensor.censor('duck you, you little batch');
 
 console.log(censored) // "**** you, you little *****"
 ```
@@ -58,8 +60,11 @@ const options = {
     censorEnd: 0,
     ignore: /(?!)/
 }
-Censor.censor('someString',options);
+myCensor.censor('someString',options);
 ```
+
+| Note: examples below are pseudocode
+|-
 
 ### options.censorText
 
@@ -97,14 +102,14 @@ options = {
 ### options.censorLongest
 
 ```js
-Censor.badwords.push('duck','ducking')
+badwords = ['duck','ducking']
 text = 'ducking'
 options = {
     censorLongest: true,
 }
 // result: *******
 
-Censor.badwords.push('duck','ducking')
+badwords = ['duck','ducking']
 text = 'ducking'
 options = {
     censorLongest: false,
