@@ -17,6 +17,7 @@ const badwords = [
 const myCensor = new GoodCensor(badwords)
 
 const toCensor = 'duck my ship';
+const toCensorAccents = 'dück my shîp';
 
 describe('good-censor', function(){
     this.slow(5)
@@ -41,6 +42,17 @@ describe('good-censor', function(){
         }
         const result = myCensor.censor(toCensor, options)
         assert.strictEqual(result, '-=BEEP=- my -=BEEP=-')
+    })
+    it('should censor words with accents', function(){
+        const result = myCensor.censor(toCensorAccents)
+        assert.strictEqual(result, '**** my ****')
+    })
+    it('should not censor if accents option is false', function(){
+        const options = {
+            censorAccents: false,
+        }
+        const result = myCensor.censor(toCensorAccents, options)
+        assert.strictEqual(result, toCensorAccents)
     })
     it('should not censor if it matches the ignore', function(){
         const options = {
