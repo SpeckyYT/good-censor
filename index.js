@@ -1,4 +1,5 @@
 const ahocorasick = require('ahocorasick');
+const accents = require('remove-accents');
 
 const {
     isIntersecting,
@@ -40,6 +41,7 @@ class GoodCensor {
             ['censorLoop','boolean',true],
             ['censorLongest','boolean',true],
             ['censorSlice','boolean',true],
+            ['censorAccents','boolean',true],
             ['censorStart','number',0],
             ['censorEnd','number',0],
             ['ignore',RegExp,/(?!)/]
@@ -58,7 +60,9 @@ class GoodCensor {
         parsedOptions.censorStart = parsedOptions.censorStart || 0;
         parsedOptions.censorEnd = parsedOptions.censorEnd || 0;
     
-        const results = this.#ahocorasick.search(text.toLowerCase());
+        let PHText = text.toLowerCase(); // "placeholder"
+        if(parsedOptions.censorAccents) PHText = accents.remove(PHText);
+        const results = this.#ahocorasick.search(PHText);
         const parsedResults = parseResults(
             results,
             parsedOptions.censorLongest
